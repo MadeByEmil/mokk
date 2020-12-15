@@ -99,13 +99,13 @@ a Mokk, and are called using a unique syntax.
 Optionally, arguments may be passed to a snippet, accessible within the snippet's source as the `{{ snippet }}` 
 context.
 
-`snippets/test_snippet.html`:
+`snippets/example_snippet.html`:
 > `<p>{{ s​nippet.myargument }}</p>`  
 
 `example_of_page_with_snippet.mokkf`:  
 > ```
 > …  
-> {! s​nippet test_snippet.html myargument="Bonjour, le monde!" !}
+> {! s​nippet example_snippet.html myargument="Bonjour, le monde!" !}
 > …
 > ```  
 Result:
