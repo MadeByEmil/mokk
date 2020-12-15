@@ -11,10 +11,10 @@ jobs:
     steps:
     - name: Install 'dokkoo' for Mokk compilation
       run: |
-        curl https://raw.githubusercontent.com/MadeByEmil/dokkoo/master/Cargo.toml --output Cargo.toml > /dev/null
+        curl -s https://raw.githubusercontent.com/MadeByEmil/dokkoo/master/Cargo.toml --output Cargo.toml > /dev/null
         version=$( awk -F ' = ' '$1 ~ /version/ { gsub(/[\"]/, "", $2); printf("%s",$2) }' Cargo.toml )
-        curl -L https://github.com/MadeByEmil/dokkoo/releases/download/v${version}/dokkoo_${version}_amd64.deb --output dokkoo_${version}_amd64.deb > /dev/null
-        sudo apt-get -y install ./dokkoo_${version}_amd64.deb
+        curl -s -L https://github.com/MadeByEmil/dokkoo/releases/download/v${version}/dokkoo_${version}_amd64.deb --output dokkoo_${version}_amd64.deb > /dev/null
+        sudo apt-get -y -q install ./dokkoo_${version}_amd64.deb
     - name: Checkout Mokk
       uses: actions/checkout@v2
       with:
@@ -31,7 +31,7 @@ jobs:
           printf "Files to build:\n" && tree ./mokk
           find ./gh-pages -mindepth 1 ! -regex '^./gh-pages/.git\(/.*\)?' -delete
           cd ./mokk
-          printf "Building … \n" && dokkoo build .
+          printf "\nBuilding … \n" && dokkoo build .
           cd ../
           cp -ar ./mokk/output/* ./gh-pages
           cp -ar ./mokk/assets ./gh-pages
