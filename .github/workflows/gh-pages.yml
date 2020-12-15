@@ -34,15 +34,17 @@ jobs:
           cd ./mokk
           printf "\nBuilding … \n" && dokkoo build .
           cd ../
-          sudo apt-get -qq install minify > /dev/null
-          minify -r -o mini/ ./mokk/output/
-          cp -ar ./mini/* ./gh-pages
+          cp -ar ./mokk/output/* ./gh-pages
           cp -ar ./mokk/assets ./gh-pages
           touch ./gh-pages/.nojekyll
           tee -a ./gh-pages/.nojekyll > /dev/null <<EOT
 
           EOT
           printf "\nFiles to publish:\n" && tree ./gh-pages
+    - name: Minimize built Mokk
+      run: |
+        sudo apt-get -qq install minify > /dev/null
+        minify -r -o gh-pages/ gh-pages
     - name: Publish
       run: |
           cd ./gh-pages
