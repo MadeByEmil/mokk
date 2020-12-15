@@ -48,13 +48,13 @@ Frontmatter is preceded and followed by three en dashes, each given a new line, 
 accessible from the `{{ page.document }}` variable.
 
 One can consider a simple Page as follows:
-```
----
-title: "Hello, world!"
----
-
-{{ page.document.frontmatter.title }}
-```
+> ```
+> ---
+> title: "Hello, world!"
+> ---
+> 
+> {{ page.document.frontmatter.title }}
+> ```
 
 Such a Page would be rendered as:
 > "Hello, world!"
@@ -66,33 +66,54 @@ context contains collections by name, which can be indexed:
 > `{{ collections["posts"] }}`
 
 A File can be assigned to a collection by specifying a `collection` key in its frontmatter:
-```
----
-collection: posts
----
-```
+> ```
+> ---
+> collection: posts
+> ---
+> ```
 
 The collection object is an iterable list, containing 'raw', or layout-less rendered copies of each File 
 within the collection the object represents. One notable use case would be for a blog, where posts can be assigned collections 
 and then presented on an index page which iterates through the collection.  
 
-```
----
-title: Homepage for Blog
-permalink: index.html
----
-{% for post in collections["posts"] %}
-# {{ post.document.frontmatter.title }}
-by {{ post.document.frontmatter.author }} \
-{{ post.document.content }}
-## END OF ARTICLE \
-{% endfor %}
-```
+> ```
+> ---
+> title: Homepage for Blog
+> permalink: index.html
+> ---
+> {% for post in collections["posts"] %}
+> # {{ post.document.frontmatter.title }}
+> by {{ post.document.frontmatter.author }} \
+> {{ post.document.content }}
+> ## END OF ARTICLE \
+> {% endfor %}
+> ```
 ## Layouts
 To be written.
 
 ## Snippets
-To be written.
+Snippets allow a file's contents to be embedded within a File. Snippets reside in the `snippet` folder within 
+a Mokk, and are called using a unique syntax.
+> `{! s​nippet SnippetFileToEmbed.filetype !}`
+
+Optionally, arguments may be passed to a snippet, accessible within the snippet's source as the `{{ snippet }}` 
+context.
+
+`snippets/test_snippet.html`:
+> `<p>{{ s​nippet.myargument }}</p>`  
+
+`example_of_page_with_snippet.mokkf`:  
+> ```
+> …  
+> {! s​nippet test_snippet.html myargument="Bonjour, le monde!" !}
+> …
+> ```  
+Result:
+> ```
+> …
+> <p>Bonjour, le monde!</p>
+> …
+> ```
 
 ## Languages
 ### [YAML 1.2](https://yaml.org/spec/1.2/spec.html "The \"YAML Ain't Markup Language\", or YAML™,  specification")  
