@@ -28,13 +28,15 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build
       run: |
-          sudo apt-get -y install tree > /dev/null
+          sudo apt-get -qq install tree > /dev/null
           printf "Files to build:\n" && tree ./mokk
           find ./gh-pages -mindepth 1 ! -regex '^./gh-pages/.git\(/.*\)?' -delete
           cd ./mokk
           printf "\nBuilding … \n" && dokkoo build .
           cd ../
-          cp -ar ./mokk/output/* ./gh-pages
+          sudo apt-get -qq install minify > /dev/null
+          minify -r -o mini/ ./mokk/output/
+          cp -ar ./mini/* ./gh-pages
           cp -ar ./mokk/assets ./gh-pages
           touch ./gh-pages/.nojekyll
           tee -a ./gh-pages/.nojekyll > /dev/null <<EOT
