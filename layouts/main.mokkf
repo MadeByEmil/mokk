@@ -4,8 +4,6 @@
 {! snippet head.html !}
 </head>
 <body>
-{% raw %}
 {{ page.document.content }}
-{% endraw %}
 </body>
 </html>
