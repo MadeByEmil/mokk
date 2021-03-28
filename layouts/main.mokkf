@@ -4,6 +4,6 @@
 {% include head.html %}
 </head>
 <body>
-{{ page.content }}
+{% raw %}{{ page.content }}{% endraw %}
 </body>
 </html>
