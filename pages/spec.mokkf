@@ -4,7 +4,7 @@ layout: main
 permalink: "index.html"
 ---
 
-# {{ page.document.frontmatter.title }}
+# {{ page.data.title }}
 {% raw %}
 ## Purpose
 A Macro Output Key Kit, acronymed as Mokk, is a collection of files.
@@ -28,7 +28,7 @@ There are three primary contexts which comprise the Mokk standard:
 2. `{{ page }}`
 3. `{{ collections }}`
 
-Additionally exist the `{{ layout }}` and `{{ snippet }}` contexts, but these are not accessible
+Additionally exist the `{{ layout }}` and `{{ include }}` contexts, but these are not accessible
 in most situations.
 
 ### `{{ global }}`
@@ -53,7 +53,7 @@ One can consider a simple Page as follows:
 > title: "Hello, world!"
 > ---
 > 
-> {{ page.document.frontmatter.title }}
+> {{ page.data.title }}
 > ```
 
 Such a Page would be rendered as:
@@ -82,30 +82,54 @@ and then presented on an index page which iterates through the collection.
 > permalink: index.html
 > ---
 > {% for post in collections["posts"] %}
-> # {{ post.document.frontmatter.title }}
-> by {{ post.document.frontmatter.author }} \
-> {{ post.document.content }}
+> # {{ post.data.title }}
+> by {{ post.data.author }} \
+> {{ post.content }}
 > ## END OF ARTICLE \
 > {% endfor %}
 > ```
 ## Layouts
-To be written.
+Layouts allow a Page to be embedded within a template. Layouts reside in the `layouts` folder within
+a Mokk, and are defined in a page's frontmatter. A layout's data is contained within the `{{ layout }}`
+context. Layouts may be within other layouts.
+
+`layouts/example_layout.mokkf`:
+> ```
+> ---
+> title: Example Layout
+> ---
+> ```
+> # {{ page.data.title }}
+> {{ page.content }}
+
+`example_of_page_with_layout.mokkf`:
+> ```
+> ---
+> title: Example Page
+> ---
+> Layout title: {{ layout.data.title }}
+> ```
+Result:
+> ```
+> <h1>Example Page</h1>
+> Layout title: Example Layout
+> ```
 
 ## Snippets
 Snippets allow a file's contents to be embedded within a File. Snippets reside in the `snippet` folder within 
-a Mokk, and are called using a unique syntax.
-> `{! s​nippet SnippetFileToEmbed.filetype !}`
+a Mokk, and are called as a Liquid tag.
+> `{% include SnippetFileToEmbed.filetype %}`
 
-Optionally, arguments may be passed to a snippet, accessible within the snippet's source as the `{{ snippet }}` 
+Optionally, arguments may be passed to a snippet, accessible within the snippet's source as the `{{ include }}` 
 context.
 
 `snippets/example_snippet.html`:
-> `<p>{{ s​nippet.myargument }}</p>`  
+> `<p>{{ include.myargument }}</p>`  
 
 `example_of_page_with_snippet.mokkf`:  
 > ```
 > …  
-> {! s​nippet example_snippet.html myargument="Bonjour, le monde!" !}
+> {% include example_snippet.html myargument="Bonjour, le monde!" %}
 > …
 > ```  
 Result:
