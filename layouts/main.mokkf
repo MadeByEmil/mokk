@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-{! snippet head.html !}
+{% include head.html %}
 </head>
 <body>
-{{ page.document.content }}
+{{ page.content }}
 </body>
 </html>
